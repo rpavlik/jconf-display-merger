@@ -13,6 +13,8 @@ import sys
 ns = "{http://www.vrjuggler.org/jccl/xsd/3.0/configuration}"
 
 class BBox2d(object):
+
+	@staticmethod
 	def union(bboxes):
 		mins = bboxes[0].origin[:]
 		maxes = [ origin + size for (origin, size) in zip(bboxes[0].origin, bboxes[0].size) ]
@@ -20,7 +22,7 @@ class BBox2d(object):
 			for corner in bbox.corners():
 				mins = [ min(prev, current) for (prev, current) in zip(mins, corner) ]
 				maxes = [ max(prev, current) for (prev, current) in zip(maxes, corner) ]
-		return BBox3d(mins, [theMax - theMin for (theMax, theMin) in zip(maxes, mins) ])
+		return BBox2d(mins, [theMax - theMin for (theMax, theMin) in zip(maxes, mins) ])
 
 	def __init__(self, origin = [0, 0], size = [0, 0]):
 		self.origin = origin
@@ -63,16 +65,27 @@ class DisplayWindow(object):
 		self.surface_viewports.append(vp)
 
 	def merge(self, other):
-		vports = other.surface_viewports[:]
-		originalOrigin = [int(elt.text) for elt in self.origin]
-		newOrigin = [int(elt.text) for elt in self.origin]
+		# Update the display window's origin and size
+		unifiedBBox = BBox2d.union([
+			BBox2d([int(elt.text) for elt in self.origin], [int(elt.text) for elt in self.size]),
+			BBox2d([int(elt.text) for elt in other.origin], [int(elt.text) for elt in other.size]),
+			])
 		for coord in range(0, 2):
-			origOther = int(other.origin[coord].text)
-			origSelf = int(self.origin[coord].text)
-			if origOther < origSelf:
-				diff = origSelf - origOther
-				self.origin[coord].text = other.origin[coord].text
-				self.size[coord].text = int(self.size[coord].text) + diff
+			self.origin[coord].text = str(unifiedBBox.origin[coord])
+			self.size[coord].text = str(unifiedBBox.size[coord])
+
+		# Transfer viewport ownership
+		for vp in other.surface_viewports[:]:
+			other.removeViewport(vp)
+			self.addViewport(vp)
+
+		# Update viewport normalized dimensions
+		for vp in self.surface_viewports:
+			for coord in range(0, 2):
+				vp.origin[coord].text = str((vp.pixel_origin[coord] - unifiedBBox.origin[coord]) / unifiedBBox.size[coord])
+				vp.size[coord].text = str(vp.pixel_size[coord] / unifiedBBox.size[coord])
+
+		other.jconf.removeWindow(other)
 
 
 
@@ -106,6 +119,6 @@ class JConf(object):
 if __name__ == "__main__":
 	config = JConf(sys.argv[1])
 	for win in config.display_windows[1:]:
-		config.removeWindow(win)
+		config.display_windows[0].merge(win)
 
 	print config.tostring()
