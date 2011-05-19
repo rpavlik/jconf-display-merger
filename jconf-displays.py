@@ -33,15 +33,20 @@ class DisplayWindow(object):
 		self.origin = elt.findall(ns + "origin")
 		self.size = elt.findall(ns + "size")
 		self.surface_viewports = [ SurfaceViewport(surface, self) for surface in elt.findall(ns + "surface_viewports") ]
-			
+	def removeViewport(self, vp):
+		self.elt.remove(vp.wrapper)
+		self.surface_viewports.remove(vp)
+	def addViewport(self, vp):
+		self.elt.append(vp.wrapper)
+		self.surface_viewports.append(vp)
+
 
 class JConf(object):
 	def __init__(self, fullpath):
-		self.fullPath = fullpath
-		self.windows = {}
+		self.fullpath = fullpath
 
-		tree = et.parse(fullpath)
-		root = tree.getroot()
+		self.tree = et.ElementTree(file = fullpath)
+		root = self.tree.getroot()
 
 		for firstLevel in list(root):
 			if firstLevel.tag == ns + "include":
@@ -49,13 +54,23 @@ class JConf(object):
 				# TODO
 				pass
 			elif firstLevel.tag == ns + "elements":
-				self.display_windows = [ DisplayWindow(window, firstLevel) for window in firstLevel.findall(ns + "display_window") ]
+				self.elements = firstLevel
+				self.display_windows = [ DisplayWindow(window, firstLevel) for window in self.elements.findall(ns + "display_window") ]
 
 			else:
 				continue
-		
+	def removeWindow(self, window):
+		self.elements.remove(window.elt)
+		self.display_windows.remove(window)
 
+	def tostring(self):
+		return """<?xml version="1.0" encoding="UTF-8"?>
+<?org-vrjuggler-jccl-settings configuration.version="3.0"?>
+""" + et.tostring(self.tree.getroot())
 
 if __name__ == "__main__":
 	config = JConf(sys.argv[1])
+	for win in config.display_windows[1:]:
+		config.removeWindow(win)
 
+	print config.tostring()
