@@ -76,6 +76,7 @@
     </property>
     <addaction name="action_Open"/>
     <addaction name="action_Save"/>
+    <addaction name="actionSave_as"/>
     <addaction name="separator"/>
     <addaction name="actionE_xit"/>
    </widget>
@@ -101,6 +102,7 @@
    </attribute>
    <addaction name="action_Open"/>
    <addaction name="action_Save"/>
+   <addaction name="actionSave_as"/>
   </widget>
   <action name="action_Open">
    <property name="text">
@@ -129,6 +131,14 @@
   <action name="action_Merge_selected_windows">
    <property name="text">
     <string>&amp;Merge selected windows</string>
+   </property>
+  </action>
+  <action name="actionSave_as">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Save &amp;as...</string>
    </property>
   </action>
  </widget>
