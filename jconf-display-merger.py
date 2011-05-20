@@ -36,10 +36,10 @@ class MergerGUI(QObject):
 		for action in actions:
 			slotname = "on_" + action.objectName()
 			if hasattr(self, slotname):
-				print "Connecting %s" % slotname
 				QObject.connect(action, SIGNAL("triggered()"), getattr(self, slotname))
 			else:
 				print "No method %s found" % slotname
+
 	def open_file(self, fn):
 		self.jconf = jconfdisplays.JConf(fn)
 		self.refresh_tree()
@@ -67,7 +67,6 @@ class MergerGUI(QObject):
 			tree.resizeColumnToContents(col)
 
 	def on_action_Open(self):
-		print "Open!"
 		fn, selfilter = QFileDialog.getOpenFileName(None, "Choose a jconf file")
 		print fn
 		self.open_file(fn)
@@ -78,17 +77,9 @@ class MergerGUI(QObject):
 				outfile.write(self.jconf.tostring())
 
 	def on_action_Merge_selected_windows(self):
-#		selectionParents = set([item.parent()
-#			for item in self.tree.selectedItems()
-#			if item.parent() is not None])
-#		print selectionParents
-#		selectionWindows = set([item for item in self.tree.selectedItems() if item.parent() is None])
-#		print selectionWindows
 		selectedWindows = [self.windows[item] for item in self.tree.selectedItems() if item in self.windows and item.parent() is None]
 		selectedViewports = [self.windows[item.parent()] for item in self.tree.selectedItems() if item.parent() in self.windows and self.windows[item.parent()] not in selectedWindows]
 		selectedWindows.extend(selectedViewports)
-		print selectedWindows
-		#selectedWindows = [self.windows[item] for item in self.tree.selectedItems() if item in self.windows]
 		if len(selectedWindows) > 1:
 			keeper = selectedWindows[0]
 			for other in selectedWindows[1:]:
@@ -100,6 +91,7 @@ def main():
 	gui = MergerGUI()
 	if len(sys.argv) > 1:
 		gui.open_file(sys.argv[1])
+
 	# Enter Qt application main loop
 	sys.exit(app.exec_())
 
