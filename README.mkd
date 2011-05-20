@@ -1,0 +1,55 @@
+jconf display merger
+====================
+
+*Homepage:* https://github.com/rpavlik/jconf-display-merger/
+
+This is a Python tool to parse [VR Juggler][1] jconf configuration files
+and extract display window and surface viewports, then allow merging of
+multiple windows into a single window with multiple viewports,
+performing the appropriate math on origin and size.
+
+The command-line tool outputs to stdout the given JConf with all windows
+merged into one. (Don't redirect this output to the same filename as you
+use for input, as this causes the unintended side-effect of deletion as
+the shell deletes the output file before it is read!) The GUI allows
+more selective action.
+
+Requires
+--------
+* Python 2.x (command-line `jconfdisplays.py` works with 2.4, GUI needs
+	at least 2.5)
+
+* Additional dependencies for the GUI tool `jconf-display-merger.py`:
+
+	* Qt - at least version 4.6 (needed by PySide)
+
+	* PySide Qt Binding: <http://www.pyside.org/> - At least these modules:
+
+		* PySide.QtCore
+
+		* PySide.QtGui
+
+		* PySide.QtUiTools
+
+Author and License
+------------------
+Ryan Pavlik, <rpavlik@iastate.edu> <abiryan@ryand.net>
+<http://academic.cleardefinition.com>
+
+This is free and open-source software. Enhancements are gladly welcomed.
+
+`jconfdisplays.py` and `jconf-display-merger.py` are all written by me,
+and available subject to the following copyright and license:
+
+> Copyright Iowa State University 2011
+>
+> Distributed under the Boost Software License, Version 1.0.
+>
+> (See accompanying file `LICENSE_1_0.txt` or copy at
+> <http://www.boost.org/LICENSE_1_0.txt>)
+
+A version of the Python ElementTree library is bundled and used when
+Python 2.4 is used or when the ElementTree version bundled with Python
+is older than the snapshot included with this app.
+
+[1]: http://vrjuggler.googlecode.com/ "VR Juggler"
