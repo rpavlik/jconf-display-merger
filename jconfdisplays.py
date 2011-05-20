@@ -55,9 +55,11 @@ class DisplayWindow(object):
 		self.origin = list(elt.findall(ns + "origin"))
 		self.size = list(elt.findall(ns + "size"))
 		self.surface_viewports = [ SurfaceViewport(surface, self) for surface in elt.findall(ns + "surface_viewports") ]
+
 	def removeViewport(self, vp):
 		self.elt.remove(vp.wrapper)
 		self.surface_viewports.remove(vp)
+
 	def addViewport(self, vp):
 		self.elt.append(vp.wrapper)
 		self.surface_viewports.append(vp)
@@ -110,6 +112,7 @@ class JConf(object):
 
 			else:
 				continue
+
 	def removeWindow(self, window):
 		self.elements.remove(window.elt)
 		self.display_windows.remove(window)
