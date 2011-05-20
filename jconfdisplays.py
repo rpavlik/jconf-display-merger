@@ -42,8 +42,8 @@ class SurfaceViewport(object):
 		self.wrapper = elt
 		self.elt = elt.find(ns + "surface_viewport")
 		self.name = self.elt.get("name")
-		self.origin = self.elt.findall(ns + "origin")
-		self.size = self.elt.findall(ns + "size")
+		self.origin = list(self.elt.findall(ns + "origin"))
+		self.size = list(self.elt.findall(ns + "size"))
 		self.pixel_origin = [ float(vp.text) * float(dw.text) + float(dwo.text) for (vp, dw, dwo) in zip(self.origin, self.window.size, self.window.origin) ]
 		self.pixel_size = [ float(vp.text) * float(dw.text) for (vp, dw) in zip(self.size, self.window.size) ]
 
@@ -52,8 +52,8 @@ class DisplayWindow(object):
 		self.jconf = jconf
 		self.elt = elt
 		self.name = elt.get("name")
-		self.origin = elt.findall(ns + "origin")
-		self.size = elt.findall(ns + "size")
+		self.origin = list(elt.findall(ns + "origin"))
+		self.size = list(elt.findall(ns + "size"))
 		self.surface_viewports = [ SurfaceViewport(surface, self) for surface in elt.findall(ns + "surface_viewports") ]
 	def removeViewport(self, vp):
 		self.elt.remove(vp.wrapper)
