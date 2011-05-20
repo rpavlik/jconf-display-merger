@@ -169,7 +169,7 @@ class MergerGUI(QObject):
 
 	def on_actionSave_as(self):
 		if self.jconf is not None:
-			fn, selfilter = QFileDialog.getSaveFileName(self.window, "Specify a save filename", "", "JConf files (*.jconf);;All files (*.*)")
+			fn, selfilter = QFileDialog.getSaveFileName(self.window, "Specify a save filename", self.jconf.fullpath, "JConf files (*.jconf)")
 			if len(fn) > 0:
 				self.jconf.fullpath = fn
 				self.save_file()
