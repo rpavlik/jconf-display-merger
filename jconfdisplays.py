@@ -46,8 +46,6 @@ class SurfaceViewport(object):
 		self.size = self.elt.findall(ns + "size")
 		self.pixel_origin = [ float(vp.text) * float(dw.text) + float(dwo.text) for (vp, dw, dwo) in zip(self.origin, self.window.size, self.window.origin) ]
 		self.pixel_size = [ float(vp.text) * float(dw.text) for (vp, dw) in zip(self.size, self.window.size) ]
-		print self.pixel_origin
-		print self.pixel_size
 
 class DisplayWindow(object):
 	def __init__(self, elt, jconf):
