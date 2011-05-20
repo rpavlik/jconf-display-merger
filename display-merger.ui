@@ -23,12 +23,31 @@
       <property name="selectionBehavior">
        <enum>QAbstractItemView::SelectItems</enum>
       </property>
-      <attribute name="headerVisible">
+      <property name="headerHidden">
        <bool>false</bool>
+      </property>
+      <property name="columnCount">
+       <number>3</number>
+      </property>
+      <attribute name="headerVisible">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="headerCascadingSectionResizes">
+       <bool>true</bool>
       </attribute>
       <column>
        <property name="text">
         <string>Name</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Origin</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Size</string>
        </property>
       </column>
      </widget>
