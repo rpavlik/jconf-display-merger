@@ -83,6 +83,24 @@ class MergerGUI(QObject):
 		if self.jconf is not None:
 			with open(self.jconf.fullpath, "w") as outfile:
 				outfile.write(self.jconf.tostring())
+
+	def on_action_Merge_selected_windows(self):
+#		selectionParents = set([item.parent()
+#			for item in self.tree.selectedItems()
+#			if item.parent() is not None])
+#		print selectionParents
+#		selectionWindows = set([item for item in self.tree.selectedItems() if item.parent() is None])
+#		print selectionWindows
+		selectedWindows = [self.windows[item] for item in self.tree.selectedItems() if item in self.windows and item.parent() is None]
+		selectedViewports = [self.windows[item.parent()] for item in self.tree.selectedItems() if item.parent() in self.windows and self.windows[item.parent()] not in selectedWindows]
+		selectedWindows.extend(selectedViewports)
+		print selectedWindows
+		#selectedWindows = [self.windows[item] for item in self.tree.selectedItems() if item in self.windows]
+		if len(selectedWindows) > 1:
+			keeper = selectedWindows[0]
+			for other in selectedWindows[1:]:
+				keeper.merge(other)
+			self.refresh_tree()
 def main():
 	app = QApplication(sys.argv)
 	# Create and show window
