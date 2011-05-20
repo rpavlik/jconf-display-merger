@@ -65,6 +65,9 @@ class MergerGUI(QObject):
 		self.dirtyChanged.connect(self.update_title)
 		self.dirtyChanged.connect(self.actions["action_Save"].setEnabled)
 
+		# When selection changes...
+		self.tree.itemSelectionChanged.connect(self.handleSelection)
+
 	@Slot()
 	def setDirty(self):
 		oldDirty = self.isDirty
@@ -136,6 +139,18 @@ class MergerGUI(QObject):
 	def getSelectedViewports(self):
 		selectedViewports = [self.surface_viewports[item] for item in self.tree.selectedItems() if item in self.surface_viewports]
 		return selectedViewports
+
+	@Slot()
+	def handleSelection(self):
+		print "in handleSelection"
+		selWin = self.getSelectedWindows()
+		print selWin
+		canMerge = len(selWin) > 1
+		print canMerge
+		self.actions["action_Merge_selected_windows"].setEnabled(canMerge)
+
+		canSplit = len(self.getSelectedViewports()) > 0
+		# TODO when we can split
 
 	def on_action_Open(self):
 		fn, selfilter = QFileDialog.getOpenFileName(self.window, "Choose a jconf file", "", "JConf files (*.jconf);;All files (*.*)")
