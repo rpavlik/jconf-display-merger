@@ -27,6 +27,7 @@ class MergerGUI(QObject):
 
 		# Set up attributes of this class
 		self.tree = self.window.findChild(QTreeWidget)
+		self.jconf = None
 
 		# Connect actions
 		actions = [ action for action in self.window.findChildren(QAction)
