@@ -22,6 +22,9 @@ class MergerGUI(QObject):
 	filenameChanged = Signal()
 	jconfModified = Signal()
 
+	mergePossible = Signal(bool)
+	splitPossible = Signal(bool)
+
 	def __init__(self, uifn = "display-merger.ui", parent = None):
 		super(MergerGUI, self).__init__(parent)
 
@@ -67,6 +70,12 @@ class MergerGUI(QObject):
 
 		# When selection changes...
 		self.tree.itemSelectionChanged.connect(self.handleSelection)
+
+		self.mergePossible.connect(self.actions["action_Merge_selected_windows"].setEnabled)
+		self.mergePossible.connect(self.window.findChild(QWidget, "MergeButton").setEnabled)
+
+		# TODO when we can split
+		#self.splitPossible.connect(self.actions["action_Split_out_selected_viewports"].setEnabled)
 
 	@Slot()
 	def setDirty(self):
@@ -142,15 +151,11 @@ class MergerGUI(QObject):
 
 	@Slot()
 	def handleSelection(self):
-		print "in handleSelection"
-		selWin = self.getSelectedWindows()
-		print selWin
-		canMerge = len(selWin) > 1
-		print canMerge
-		self.actions["action_Merge_selected_windows"].setEnabled(canMerge)
+		canMerge = len(self.getSelectedWindows()) > 1
+		self.mergePossible.emit(canMerge)
 
 		canSplit = len(self.getSelectedViewports()) > 0
-		# TODO when we can split
+		self.splitPossible.emit(canSplit)
 
 	def on_action_Open(self):
 		fn, selfilter = QFileDialog.getOpenFileName(self.window, "Choose a jconf file", "", "JConf files (*.jconf);;All files (*.*)")

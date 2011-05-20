@@ -52,6 +52,16 @@
       </column>
      </widget>
     </item>
+    <item>
+     <widget class="QPushButton" name="MergeButton">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string>Merge selected windows</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -95,8 +105,6 @@
    <addaction name="action_Open"/>
    <addaction name="action_Save"/>
    <addaction name="actionSave_as"/>
-   <addaction name="separator"/>
-   <addaction name="action_Merge_selected_windows"/>
   </widget>
   <action name="action_Open">
    <property name="text">
@@ -157,6 +165,22 @@
     <hint type="destinationlabel">
      <x>268</x>
      <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>MergeButton</sender>
+   <signal>clicked()</signal>
+   <receiver>action_Merge_selected_windows</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>399</x>
+     <y>577</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
     </hint>
    </hints>
   </connection>
