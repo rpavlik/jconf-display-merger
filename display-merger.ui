@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>538</width>
-    <height>565</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>JConf Display Merger</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -66,7 +66,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>538</width>
+     <width>800</width>
      <height>23</height>
     </rect>
    </property>
@@ -104,7 +104,7 @@
   </widget>
   <action name="action_Open">
    <property name="text">
-    <string>&amp;Open</string>
+    <string>&amp;Open...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
@@ -147,6 +147,22 @@
     <hint type="destinationlabel">
      <x>-1</x>
      <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionE_xit</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>268</x>
+     <y>282</y>
     </hint>
    </hints>
   </connection>
