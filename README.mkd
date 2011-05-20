@@ -34,6 +34,21 @@ Requires
 
 		* PySide.QtUiTools
 
+Notes
+-----
+The saved output of this app is created using the Python ElementTree
+library. This library explicitly qualifies all elements with a namespace
+prefix when serializing (saving). The practical effect of this is that
+saved jconf files will have "ns0:" in each tag name. VRJConfig loads
+these files just fine, since they're still logically equivalent to the
+way that VRJConfig saves them. I usually find I need to tweak some
+parameters (like number of pipes) after merging displays anyway, so
+loading the file in VRJConfig, changing as needed, and saving restores
+the original "style" of the XML file.
+
+Merging displays in a cluster is not currently supported, though it
+shouldn't be too difficult. Contributions are welcome :)
+
 Author and License
 ------------------
 Ryan Pavlik, <rpavlik@iastate.edu> <abiryan@ryand.net>
