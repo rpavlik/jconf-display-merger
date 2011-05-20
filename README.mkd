@@ -14,6 +14,9 @@ use for input, as this causes the unintended side-effect of deletion as
 the shell deletes the output file before it is read!) The GUI allows
 more selective action.
 
+
+![jconf-display-merger screenshot][2]
+
 Requires
 --------
 * Python 2.x (command-line `jconfdisplays.py` works with 2.4, GUI needs
@@ -53,3 +56,4 @@ Python 2.4 is used or when the ElementTree version bundled with Python
 is older than the snapshot included with this app.
 
 [1]: http://vrjuggler.googlecode.com/ "VR Juggler"
+[2]: https://github.com/rpavlik/jconf-display-merger/raw/master/display-merger-gui-screenshot.png "jconf-display-merger screenshot"
