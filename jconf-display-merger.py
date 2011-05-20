@@ -99,6 +99,9 @@ class MergerGUI(QObject):
 		self.openChanged.emit(True)
 		self.setClean()
 
+		for col in range(0, 3):
+			self.tree.resizeColumnToContents(col)
+
 	def save_file(self):
 		if self.jconf is not None:
 			with open(self.jconf.fullpath, "w") as outfile:
@@ -117,17 +120,16 @@ class MergerGUI(QObject):
 
 	@Slot()
 	def refresh_tree(self):
-		tree = self.window.findChild(QTreeWidget)
-		if tree.topLevelItemCount() > 0:
-			tree.clear()
+		if self.tree.topLevelItemCount() > 0:
+			self.tree.clear()
 		self.windows = {}
 		self.surface_viewports = {}
 		for display_window in self.jconf.display_windows:
-			item = QTreeWidgetItem(None, ["%s" % display_window.name,
+			item = QTreeWidgetItem(self.tree, ["%s" % display_window.name,
 					"%d px, %d px" % (int(display_window.origin[0].text), int(display_window.origin[1].text)),
 					"%d px x %d px" % (int(display_window.size[0].text), int(display_window.size[1].text))
 				])
-			tree.addTopLevelItem(item)
+			self.tree.addTopLevelItem(item)
 			self.windows[item] = display_window
 			for vp in display_window.surface_viewports:
 				vpitem = QTreeWidgetItem(item, ["%s" % vp.name,
@@ -137,8 +139,6 @@ class MergerGUI(QObject):
 				self.surface_viewports[vpitem] = vp
 				item.addChild(vpitem)
 			item.setExpanded(True)
-		for col in range(0, 3):
-			tree.resizeColumnToContents(col)
 
 	def getSelectedWindows(self):
 		selectedWindows = [self.windows[item] for item in self.tree.selectedItems() if item in self.windows and item.parent() is None]
