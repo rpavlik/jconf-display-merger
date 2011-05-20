@@ -83,6 +83,11 @@ class DisplayWindow(object):
 				vp.origin[coord].text = str((vp.pixel_origin[coord] - unifiedBBox.origin[coord]) / unifiedBBox.size[coord])
 				vp.size[coord].text = str(vp.pixel_size[coord] / unifiedBBox.size[coord])
 
+		# Update our own name
+		self.name = self.name + "," + other.name
+		self.elt.set("name", self.name)
+
+		# Remove other window from jconf
 		other.jconf.removeWindow(other)
 
 
