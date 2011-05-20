@@ -79,6 +79,10 @@ class MergerGUI(QObject):
 		print fn
 		self.open_file(fn)
 
+	def on_action_Save(self):
+		if self.jconf is not None:
+			with open(self.jconf.fullpath, "w") as outfile:
+				outfile.write(self.jconf.tostring())
 def main():
 	app = QApplication(sys.argv)
 	# Create and show window
