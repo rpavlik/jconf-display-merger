@@ -7,8 +7,17 @@
 #    (See accompanying file LICENSE_1_0.txt or copy at
 #          http://www.boost.org/LICENSE_1_0.txt)
 
-import xml.etree.cElementTree as et
 import sys
+
+import xml.etree.ElementTree
+if (xml.etree.ElementTree.VERSION.split(".")[:2] < ["1", "3"]):
+	print "Using bundled ElementTree"
+	# Use bundled ElementTree instead
+	import os.path
+	sys.path.append(os.path.join(sys.path[0], "elementtree-1.3a3-20070912"))
+	import elementtree.ElementTree as et
+else:
+	et = xml.etree.ElementTree
 
 ns = "{http://www.vrjuggler.org/jccl/xsd/3.0/configuration}"
 
