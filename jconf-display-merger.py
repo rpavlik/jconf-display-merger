@@ -30,7 +30,7 @@ class MergerGUI(QObject):
 	mergePossible = Signal(bool)
 	splitPossible = Signal(bool)
 
-	def __init__(self, uifn = "display-merger.ui", parent = None):
+	def __init__(self, uifn = os.path.join(sys.path[0], "display-merger.ui"), parent = None):
 		super(MergerGUI, self).__init__(parent)
 
 		# Load UI
