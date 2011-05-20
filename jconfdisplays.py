@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-# jconfdisplays - parse a VR Juggler jconf file for display info
+# jconfdisplays - parse a VR Juggler jconf file for display info, and
+# being able to modify
 # Author: Ryan Pavlik
 
 #          Copyright Iowa State University 2011.
@@ -11,7 +12,6 @@ import sys
 
 import xml.etree.ElementTree
 if (xml.etree.ElementTree.VERSION.split(".")[:2] < ["1", "3"]):
-	print "Using bundled ElementTree"
 	# Use bundled ElementTree instead
 	import os.path
 	sys.path.append(os.path.join(sys.path[0], "elementtree-1.3a3-20070912"))
@@ -106,7 +106,6 @@ class DisplayWindow(object):
 class JConf(object):
 	def __init__(self, fullpath):
 		self.fullpath = fullpath
-
 		self.tree = et.ElementTree(file = fullpath)
 		root = self.tree.getroot()
 
@@ -127,6 +126,10 @@ class JConf(object):
 		self.display_windows.remove(window)
 
 	def tostring(self):
+
+		# This statement appears to do nothing? Wanted to set this as the default namespace...
+		#et.register_namespace("", ns)
+
 		return """<?xml version="1.0" encoding="UTF-8"?>
 <?org-vrjuggler-jccl-settings configuration.version="3.0"?>
 """ + et.tostring(self.tree.getroot())
