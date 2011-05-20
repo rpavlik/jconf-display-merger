@@ -41,6 +41,9 @@ class MergerGUI(QObject):
 				print "No method %s found" % slotname
 	def open_file(self, fn):
 		self.jconf = jconfdisplays.JConf(fn)
+		self.refresh_tree()
+
+	def refresh_tree(self):
 		tree = self.window.findChild(QTreeWidget)
 		if tree.topLevelItemCount() > 0:
 			tree.clear()
