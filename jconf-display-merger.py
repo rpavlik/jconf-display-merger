@@ -53,7 +53,8 @@ class MergerGUI(QObject):
 			if hasattr(self, slotname):
 				action.triggered.connect(getattr(self, slotname))
 			else:
-				print "No method %s found" % slotname
+				#print "No method %s found" % slotname
+				pass
 
 		# On opening(/closing) a file...
 		self.openChanged.connect(self.update_title)
