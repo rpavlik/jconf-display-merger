@@ -50,28 +50,21 @@ class MergerGUI(QObject):
 			tree.clear()
 		self.windows = {}
 		for display_window in self.jconf.display_windows:
-			item = QTreeWidgetItem(None, ["%s: %d, %d, %d, %d" % 
-				(
-				display_window.name,
-				int(display_window.origin[0].text),
-				int(display_window.origin[1].text),
-				int(display_window.size[0].text),
-				int(display_window.size[1].text),
-				)
+			item = QTreeWidgetItem(None, ["%s" % display_window.name,
+					"%d px, %d px" % (int(display_window.origin[0].text), int(display_window.origin[1].text)),
+					"%d px x %d px" % (int(display_window.size[0].text), int(display_window.size[1].text))
 				])
 			tree.addTopLevelItem(item)
 			self.windows[item] = display_window
 			for vp in display_window.surface_viewports:
-				vpitem = QTreeWidgetItem(None, ["%s: %d, %d, %d, %d" % 
-					(
-					vp.name,
-					int(vp.pixel_origin[0]),
-					int(vp.pixel_origin[1]),
-					int(vp.pixel_size[0]),
-					int(vp.pixel_size[1]),
-					)
-					])
+				vpitem = QTreeWidgetItem(item, ["%s" % vp.name,
+					"%f, %f" % (float(vp.origin[0].text), float(vp.origin[1].text)),
+					"%f x %f" % (float(vp.size[0].text), float(vp.size[1].text))
+				])
 				item.addChild(vpitem)
+			item.setExpanded(True)
+		for col in range(0, 3):
+			tree.resizeColumnToContents(col)
 
 	def on_action_Open(self):
 		print "Open!"
