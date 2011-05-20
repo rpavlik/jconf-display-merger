@@ -108,6 +108,7 @@ class MergerGUI(QObject):
 		if tree.topLevelItemCount() > 0:
 			tree.clear()
 		self.windows = {}
+		self.surface_viewports = {}
 		for display_window in self.jconf.display_windows:
 			item = QTreeWidgetItem(None, ["%s" % display_window.name,
 					"%d px, %d px" % (int(display_window.origin[0].text), int(display_window.origin[1].text)),
@@ -120,10 +121,21 @@ class MergerGUI(QObject):
 					"%f, %f" % (float(vp.origin[0].text), float(vp.origin[1].text)),
 					"%f x %f" % (float(vp.size[0].text), float(vp.size[1].text))
 				])
+				self.surface_viewports[vpitem] = vp
 				item.addChild(vpitem)
 			item.setExpanded(True)
 		for col in range(0, 3):
 			tree.resizeColumnToContents(col)
+
+	def getSelectedWindows(self):
+		selectedWindows = [self.windows[item] for item in self.tree.selectedItems() if item in self.windows and item.parent() is None]
+		selectedViewportsParents = [self.windows[item.parent()] for item in self.tree.selectedItems() if item.parent() in self.windows and self.windows[item.parent()] not in selectedWindows]
+		selectedWindows.extend(selectedViewportsParents)
+		return selectedWindows
+
+	def getSelectedViewports(self):
+		selectedViewports = [self.surface_viewports[item] for item in self.tree.selectedItems() if item in self.surface_viewports]
+		return selectedViewports
 
 	def on_action_Open(self):
 		fn, selfilter = QFileDialog.getOpenFileName(self.window, "Choose a jconf file", "", "JConf files (*.jconf);;All files (*.*)")
@@ -143,9 +155,7 @@ class MergerGUI(QObject):
 				self.filenameChanged.emit()
 
 	def on_action_Merge_selected_windows(self):
-		selectedWindows = [self.windows[item] for item in self.tree.selectedItems() if item in self.windows and item.parent() is None]
-		selectedViewports = [self.windows[item.parent()] for item in self.tree.selectedItems() if item.parent() in self.windows and self.windows[item.parent()] not in selectedWindows]
-		selectedWindows.extend(selectedViewports)
+		selectedWindows = self.getSelectedWindows()
 		if len(selectedWindows) > 1:
 			keeper = selectedWindows[0]
 			for other in selectedWindows[1:]:
